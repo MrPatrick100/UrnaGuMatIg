@@ -3,7 +3,7 @@
 session_start();
 
 // Se já estiver logado, vai direto para a página principal
-if (!empty($_SESSION['id'])) {
+if (!empty($_SESSION['id_usuario'])) {
     header('Location: index.php');
     exit;
 }
@@ -26,11 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if($usuario === null){
       $repo->criarUsuario($nome, $cpfFormulario, '', 0, 0);
+      $usuario = $repo->buscarPorCPF($cpfFormulario);
     }
 
-    $_SESSION['id']             = $usuario->getId();
+    $_SESSION['id_usuario']     = $usuario->getId();
     $_SESSION['nome']           = $nome;
-    $_SESSION['cpf']            = $cpfFormulario;
+    $_SESSION['cpf']            = trim($cpfFormulario);
     $_SESSION['foto']           = $usuario->getFoto();
     $_SESSION['isCandidato']    = $usuario->getIsCandidato();
     $_SESSION['votou']          = $usuario->getVotou();
