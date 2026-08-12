@@ -8,6 +8,7 @@ class Usuario {
     private string  $foto;
     private int    $isCandidato;
     private int    $votou;
+    private int    $ultimoVoto;
 
     public function __construct(array $dados) {
         $this->id               = (int)     ($dados['id']           ?? 0);
@@ -16,6 +17,7 @@ class Usuario {
         $this->foto             = (string)  ($dados['foto']         ?? '');
         $this->isCandidato      = (int)     ($dados['isCandidato']  ?? 0);
         $this->votou            = (int)     ($dados['votou']  ?? 0);
+        $this->ultimoVoto            = (int)     ($dados['ultimoVoto']  ?? 0);
     }
 
     public function getId():                int         { return $this->id; }
@@ -24,6 +26,7 @@ class Usuario {
     public function getFoto():              string      { return $this->foto; }
     public function getIsCandidato():       int        { return $this->isCandidato; }
     public function getVotou():             int        { return $this->votou; }
+    public function getUltimoVoto():             int        { return $this->ultimoVoto; }
 
     public static function novo(int $id, string $nome, string $cpf, string $foto, int $isCandidato, int $votou): Usuario {
         if ($id <= 0) {

@@ -11,6 +11,18 @@ class UsuarioRepository {
         $this->pdo = getConexao();
     }
 
+    public function buscarPorId(string $id): ?Usuario {
+        $stmt = $this->pdo->prepare('SELECT * FROM usuario WHERE id = :id LIMIT 1');
+        $stmt->execute([':ud' => $id]);
+        $dados = $stmt->fetch();
+
+        if ($dados) {
+            return new Usuario($dados);
+        }
+
+        return null;
+    }
+
     public function buscarPorCpf(string $cpf): ?Usuario {
         $stmt = $this->pdo->prepare('SELECT * FROM usuario WHERE cpf = :cpf LIMIT 1');
         $stmt->execute([':cpf' => $cpf]);
@@ -23,8 +35,25 @@ class UsuarioRepository {
         return null;
     }
 
+    public function listarCandidatos(): array {
+        try {
+            $stmt = $this->pdo->prepare(
+                'SELECT * FROM usuario WHERE isCandidato = true ORDER BY nome ASC'
+            );
+            $stmt->execute([]);
+            $lista = [];
+            foreach ($stmt->fetchAll() as $dados) {
+                $lista[] = new Usuario($dados);
+            }
+            return $lista;
+        } catch(Exception $e) {
+            echo 'Erro ao buscar candidatos: ' . $e->getMessage();
+            return [];
+        }
+    }
+
     public function criarUsuario(string $nome, string $cpf, string $foto, int $isCandidato, int $votou): void {
-        $stmt = $this->pdo->prepare('INSERT INTO usuario (nome, cpf, foto, isCandidato, votou) VALUES (:nome, :cpf, :foto, :votou)');
+        $stmt = $this->pdo->prepare('INSERT INTO usuario (nome, cpf, foto, isCandidato, votou) VALUES (:nome, :cpf, :foto, :isCandidato, :votou)');
         $stmt->execute([':nome' => $nome, ':cpf' => $cpf,':foto' => $foto, ':isCandidato' => $isCandidato, ':votou' => $votou]);
     }
 
