@@ -52,20 +52,20 @@ class UsuarioRepository {
         }
     }
 
-    public function criarUsuario(string $nome, string $cpf, string $foto, int $isCandidato, int $votou): void {
-        $stmt = $this->pdo->prepare('INSERT INTO usuario (nome, cpf, foto, isCandidato, votou) VALUES (:nome, :cpf, :foto, :isCandidato, :votou)');
-        $stmt->execute([':nome' => $nome, ':cpf' => $cpf,':foto' => $foto, ':isCandidato' => $isCandidato, ':votou' => $votou]);
+    public function criarUsuario(string $nome, string $cpf, string $foto, int $isCandidato, int $votos, DateTime $ultimoVoto): void {
+        $stmt = $this->pdo->prepare('INSERT INTO usuario (nome, cpf, foto, isCandidato, votou, ultimoVoto) VALUES (:nome, :cpf, :foto, :isCandidato, :votos, :ultimoVoto)');
+        $stmt->execute([':nome' => $nome, ':cpf' => $cpf,':foto' => $foto, ':isCandidato' => $isCandidato, ':votos' => $votos, ':ultimoVoto' => $ultimoVoto]);
     }
 
-    // public function atualizarSenha(int $id, string $senha): void {
-    //     $stmt = $this->pdo->prepare('UPDATE usuario SET senha = :senha WHERE id = :id');
-    //     $stmt->execute([':senha' => $senha,':id' => $id]);
-    // }
+    public function atualizarVotos(int $id, bool $votos): void {
+        $stmt = $this->pdo->prepare('UPDATE usuario SET votos = :votos WHERE id = :id');
+        $stmt->execute([':votos' => $votos,':id' => $id]);
+    }
 
-    // public function atualizarAvatar(int $id, string $foto_perfil): void {
-    //     $stmt = $this->pdo->prepare('UPDATE usuario SET foto_perfil = :foto_perfil WHERE id = :id');
-    //     $stmt->execute([':foto_perfil' => $foto_perfil,':id' => $id]);
-    // }
+    public function atualizarUltimoVoto(int $id, DateTime $ultimoVoto): void {
+        $stmt = $this->pdo->prepare('UPDATE usuario SET ultimoVoto = :ultimoVoto WHERE id = :id');
+        $stmt->execute([':ultimoVoto' => $ultimoVoto,':id' => $id]);
+    }
 
     // public function atualizarEmail(int $id, string $email): void {
     //     $stmt = $this->pdo->prepare('UPDATE usuario SET email = :email WHERE id = :id');
