@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 12/08/2026 às 17:25
+-- Tempo de geração: 13/08/2026 às 02:54
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.0.30
 
@@ -33,18 +33,19 @@ CREATE TABLE `usuario` (
   `cpf` varchar(11) NOT NULL,
   `foto` blob DEFAULT NULL,
   `isCandidato` tinyint(1) NOT NULL,
-  `votou` tinyint(1) DEFAULT NULL,
-  `ultimoVoto` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `ultimoVoto` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `votos` int(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `nome`, `cpf`, `foto`, `isCandidato`, `votou`, `ultimoVoto`) VALUES
-(1, 'igor', '12345678900', '', 0, 0, '2026-08-12 13:35:47'),
-(2, 'blackout', '55566677700', NULL, 1, 0, '2026-08-12 15:11:10'),
-(3, 'raven', '12364672788', NULL, 1, 0, '2026-08-12 15:11:30');
+INSERT INTO `usuario` (`id`, `nome`, `cpf`, `foto`, `isCandidato`, `ultimoVoto`, `votos`) VALUES
+(1, 'igor', '12345678900', '', 0, '2026-08-12 13:35:47', NULL),
+(2, 'blackout', '55566677700', NULL, 1, '2026-08-12 15:11:10', NULL),
+(3, 'raven', '12364672788', NULL, 1, '2026-08-12 15:11:30', NULL),
+(4, 'igor', '44455544433', '', 0, '2026-08-12 21:03:47', NULL);
 
 --
 -- Índices para tabelas despejadas
@@ -64,7 +65,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
