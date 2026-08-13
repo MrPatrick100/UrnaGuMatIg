@@ -33,7 +33,32 @@ $alcances = ['Pessoal', 'Curto', 'Médio', 'Longo'];
 $areas    = ['Individual', 'Reta', 'Cone', 'Raio'];
 $duracoes = ['1', '1d4'];
 
+$dataAtual  = new DateTime();
+$ultimoVoto = $usuario->getUltimoVoto();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+  $dataAtualEmSegundos = $dataAtual->getTimestamp();
+  $ultimoVotoEmSegundos = $ultimoVoto->getTimestamp();
+  $tempoDesdeUltimoVoto = $dataAtualEmSegundos - $ultimoVotoEmSegundos;
+  $cooldownDoVoto = 86400;
+
+  if($tempoDesdeUltimoVoto >= $cooldownDoVoto){
+    $repo->atualizarVotos($candidato->getId(), $candidato->getVotos() + 1);
+    $repo->atualizarUltimoVoto($usuario->getId(), new DateTime());
+  }
+  else{
+    $tempoRestante = $cooldownDoVoto - $tempoDesdeUltimoVoto;
+
+    $horas = floor($tempoRestante / 3600);
+    $minutos = floor(($tempoRestante % 3600) / 60);
+
+    echo "Você já votou! Espere {$horas} horas e {$minutos} minutos para votar novamente :)";
+}
+  
+  
+
+// $repo->atualizarVotou($_SESSION['id_usuario'], true)
 //   $nome       = trim  ($_POST['nome']             ?? '');
 //   $tipo       = trim  ($_POST['tipo']             ?? '');
 //   $ciclo      = (int) ($_POST['ciclo']            ?? 0);
@@ -73,6 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
+<link rel="stylesheet" href="../assets/styleIndex.css">
+
 <div class="page-header">
   <h2>Urna Eletrônica</h2>
 </div>
@@ -94,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="nome">Nome:<?= htmlspecialchars($cand->getNome()) ?></label>
             <img src="../assets/img/blackout.png" class="img">
             <label for="cpf-candidato">CPF:<?= htmlspecialchars($cand->getCpf()) ?></label>
+            <label for="votos-candidato">Votos:<?= htmlspecialchars($cand->getVotos()) ?></label>
         </div>
 
     <?php endforeach; ?>

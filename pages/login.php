@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $repo->buscarPorCPF($cpf);
 
     if($usuario === null){
-      $repo->criarUsuario($nome, $cpfFormulario, '', 0, 0);
+      $repo->criarUsuario($nome, $cpfFormulario, '', 0, 0, new DateTime());
       $usuario = $repo->buscarPorCPF($cpfFormulario);
     }
 
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login — Urna Eletrônica</title>
-  <link rel="stylesheet" href="../assets/style.css" />
+  <link rel="stylesheet" href="../assets/styleLogin.css" />
 </head>
 <body class="login-body">
 
@@ -89,8 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <button type="submit" class="btn btn-primary btn-full">Entrar</button>
     <br>
-    <br>
-    <a href="cadastro.php" class="btn btn-secondary btn-full">Criar uma conta</a>
   </form>
 
 </div>
