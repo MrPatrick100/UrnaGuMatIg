@@ -11,9 +11,9 @@ class UsuarioRepository {
         $this->pdo = getConexao();
     }
 
-    public function buscarPorId(string $id): ?Usuario {
+    public function buscarPorId(int $id): ?Usuario {
         $stmt = $this->pdo->prepare('SELECT * FROM usuario WHERE id = :id LIMIT 1');
-        $stmt->execute([':ud' => $id]);
+        $stmt->execute([':id' => $id]);
         $dados = $stmt->fetch();
 
         if ($dados) {
@@ -53,18 +53,21 @@ class UsuarioRepository {
     }
 
     public function criarUsuario(string $nome, string $cpf, string $foto, int $isCandidato, int $votos, DateTime $ultimoVoto): void {
-        $stmt = $this->pdo->prepare('INSERT INTO usuario (nome, cpf, foto, isCandidato, votou, ultimoVoto) VALUES (:nome, :cpf, :foto, :isCandidato, :votos, :ultimoVoto)');
-        $stmt->execute([':nome' => $nome, ':cpf' => $cpf,':foto' => $foto, ':isCandidato' => $isCandidato, ':votos' => $votos, ':ultimoVoto' => $ultimoVoto]);
+        $stmt = $this->pdo->prepare('INSERT INTO usuario (nome, cpf, foto, isCandidato, votos, ultimoVoto) VALUES (:nome, :cpf, :foto, :isCandidato, :votos, :ultimoVoto)');
+        $stmt->execute([':nome' => $nome, ':cpf' => $cpf,':foto' => $foto,
+        ':isCandidato' => $isCandidato,
+        ':votos' => $votos,
+        ':ultimoVoto' => $ultimoVoto->format('Y-m-d H:i:s')]);
     }
 
-    public function atualizarVotos(int $id, bool $votos): void {
+    public function atualizarVotos(int $id, int $votos): void {
         $stmt = $this->pdo->prepare('UPDATE usuario SET votos = :votos WHERE id = :id');
         $stmt->execute([':votos' => $votos,':id' => $id]);
     }
 
     public function atualizarUltimoVoto(int $id, DateTime $ultimoVoto): void {
         $stmt = $this->pdo->prepare('UPDATE usuario SET ultimoVoto = :ultimoVoto WHERE id = :id');
-        $stmt->execute([':ultimoVoto' => $ultimoVoto,':id' => $id]);
+        $stmt->execute([':ultimoVoto' => $ultimoVoto->format('Y-m-d H:i:s'), ':id' => $id]);
     }
 
     // public function atualizarEmail(int $id, string $email): void {

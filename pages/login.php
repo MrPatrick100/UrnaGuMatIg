@@ -25,7 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $repo->buscarPorCPF($cpf);
 
     if($usuario === null){
-      $repo->criarUsuario($nome, $cpfFormulario, '', 0, 0, new DateTime());
+      $data = new DateTime();
+      $data->format('Y-m-d H:i:s');
+      $repo->criarUsuario($nome, $cpfFormulario, '', 0, 0, $data);
       $usuario = $repo->buscarPorCPF($cpfFormulario);
     }
 
@@ -34,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['cpf']            = trim($cpfFormulario);
     $_SESSION['foto']           = $usuario->getFoto();
     $_SESSION['isCandidato']    = $usuario->getIsCandidato();
-    $_SESSION['votou']          = $usuario->getVotou();
+    $_SESSION['votos']          = $usuario->getVotos();
 
     header('Location: index.php');
     exit;

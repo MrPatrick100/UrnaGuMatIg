@@ -35,13 +35,17 @@ $duracoes = ['1', '1d4'];
 
 $dataAtual  = new DateTime();
 $ultimoVoto = $usuario->getUltimoVoto();
+$idCandidato = 0;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+  $idCandidato = $_POST['id-candidato'];
+  $candidato = $repo->buscarPorId($idCandidato);
 
   $dataAtualEmSegundos = $dataAtual->getTimestamp();
   $ultimoVotoEmSegundos = $ultimoVoto->getTimestamp();
   $tempoDesdeUltimoVoto = $dataAtualEmSegundos - $ultimoVotoEmSegundos;
-  $cooldownDoVoto = 86400;
+  $cooldownDoVoto = 10;
 
   if($tempoDesdeUltimoVoto >= $cooldownDoVoto){
     $repo->atualizarVotos($candidato->getId(), $candidato->getVotos() + 1);
@@ -128,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="form-group">
       <label for="candidato">Candidato</label>
-      <select id="nome-candidato" name="nome-candidato" required>
+      <select id="id-candidato" name="id-candidato" required>
         <option value="">Selecione o candidato...</option>
         <?php foreach ($candidatos as $c): ?>
           <?php
@@ -137,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $selecionado = 'selected';
             }
           ?>
-          <option value="<?= $c->getNome() ?>" <?= $selecionado ?>>
+          <option value="<?= $c->getId() ?>" <?= $selecionado ?>>
             <?= $c->getNome() ?>
           </option>
         <?php endforeach; ?>
