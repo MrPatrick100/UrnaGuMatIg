@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if($tempoDesdeUltimoVoto >= $cooldownDoVoto){
     $repo->atualizarVotos($candidato->getId(), $candidato->getVotos() + 1);
     $repo->atualizarUltimoVoto($usuario->getId(), new DateTime());
+    header('Location: logout.php');
   }
   else{
     $tempoRestante = $cooldownDoVoto - $tempoDesdeUltimoVoto;
@@ -108,11 +109,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <h2>Urna Eletrônica</h2>
 </div>
 
+
 <?php if ($erro !== ''): ?>
   <div class="alert alert-erro"><?= htmlspecialchars($erro) ?></div>
 <?php endif; ?>
 
 <div class="form-card">
+  <a href="logout.php" class="btn-logout">Sair</a>
+  <br>
+
+
   <form method="POST" action="index.php" enctype="multipart/form-data">
 
     <div class="form-group">
@@ -123,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="form-group">
             <label for="nome">Nome:<?= htmlspecialchars($cand->getNome()) ?></label>
-            <img src="../assets/img/blackout.png" class="img">
+            <img src="<?= htmlspecialchars($cand->getFoto()) ?>" class="img">
             <label for="cpf-candidato">CPF:<?= htmlspecialchars($cand->getCpf()) ?></label>
             <label for="votos-candidato">Votos:<?= htmlspecialchars($cand->getVotos()) ?></label>
         </div>

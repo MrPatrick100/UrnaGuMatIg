@@ -14,7 +14,7 @@ class Usuario {
         $this->id               = (int)         ($dados['id']           ?? 0);
         $this->nome             = (string)      ($dados['nome']         ?? '');
         $this->cpf              = (string)      ($dados['cpf']          ?? '');
-        $this->foto             = (string)      ($dados['foto']         ?? '');
+        $this->foto             = (string)      ($dados['foto']         ?? '../assets/img/avatar.png');
         $this->isCandidato      = (int)         ($dados['isCandidato']  ?? 0);
         $this->votos            = (int)         ($dados['votos']        ?? 0);
         $this->ultimoVoto       = new DateTime  ($dados['ultimoVoto']);
